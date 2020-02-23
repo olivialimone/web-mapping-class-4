@@ -1,8 +1,8 @@
 //load mapbox accessToken
 mapboxgl.accessToken = 'pk.eyJ1Ijoib2xpdmlhbGltb25lIiwiYSI6ImNrNmxmOXNqNzBlZnEzZG52M3dqdTF2anEifQ._jw03o430C3a-tly3N6-DQ';
 
-var initialCenterPoint = [-81.5158, 27.6648]
-var initialZoom = 5.8
+var initialCenterPoint = [-73.9712, 40.7128]
+var initialZoom = 9.4
 
 //globals for the choropleth
 var COLORS = ['#ffd1a9', '#ff9e79', '#fb6d4c', '#c23b22', '#8a0000', '#580000'],
@@ -44,7 +44,7 @@ map.addLayer({
   "source": "med-income-nyc",
   "paint": {
     "fill-color": {
-      property: 'VALUE0',
+      property: 'VALUE0', //variable for median income
       stops: [
         [BREAKS[0], COLORS[0]],
         [BREAKS[1], COLORS[1]],
