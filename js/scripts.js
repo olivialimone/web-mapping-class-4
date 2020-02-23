@@ -58,21 +58,41 @@ map.addLayer({
                 }
             });
         });
-
-        map.on("mousemove", function (e) {
+        map.on('mousemove', function (e) {
+            // query for the features under the mouse, but only in the lots layer
             var features = map.queryRenderedFeatures(e.point, {
-                layers: ["spatial_id"]
+                layers: ['med-income-nyc'],
             });
 
-            if (features.length) {
-                //show name and value in sidebar
-                document.getElementById('tooltip-name').innerHTML = "Zip Code " + features[0].properties.spatial_id;
-                document.getElementById('tooltip').innerHTML = Math.round(features[0].properties.VALUE0);
-                //for troubleshooting - show complete features info
-                //document.getElementById('tooltip').innerHTML = JSON.stringify(features, null, 2);
+            // if the mouse pointer is over a feature on our layer of interest
+            // take the data for that feature and display it in the sidebar
+            if (features.length > 0) {
+              map.getCanvas().style.cursor = 'pointer';  // make the cursor a pointer
+
+              var hoveredFeature = features[0]
+              var featureInfo = `
+                <h4>${hoveredFeature.properties.spatial_id}</h4>
+                <p><strong>Median Income:</strong> ${COLORS(parseInt(hoveredFeature.properties.VALUE0))}</p>
+                <p><strong>Zip Code:</strong> ${hoveredFeature.properties.spatial_id}</p>
+              }
+
+              $('#feature-info').html(featureInfo)
+
+              // set this lot's polygon feature as the data for the highlight source
+              map.getSource('tooltip-name').setData(hoveredFeature.geometry);
             } else {
-                //if not hovering over a feature set tooltip to empty
-                document.getElementById('tooltip-name').innerHTML = "";
-                document.getElementById('tooltip').innerHTML = "";
+              // if there is no feature under the mouse, reset things:
+              map.getCanvas().style.cursor = 'default'; // make the cursor default
+
+              // reset the highlight source to an empty featurecollection
+              map.getSource('highlight-feature').setData({
+                type: 'tooltip-name',
+                features: []
+              });
+
+              // reset the default message
+              $('#feature-info').html(defaultText)
             }
+          })
+
         });
