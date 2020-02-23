@@ -91,7 +91,7 @@ map.addLayer({
               });
 
               // reset the default message
-              $('#feature-info').html(defaultText)
+              $('#tooltip-name').html(defaultText)
             }
           })
 
