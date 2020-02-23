@@ -1,17 +1,18 @@
 //load mapbox accessToken
 mapboxgl.accessToken = 'pk.eyJ1Ijoib2xpdmlhbGltb25lIiwiYSI6ImNrNmxmOXNqNzBlZnEzZG52M3dqdTF2anEifQ._jw03o430C3a-tly3N6-DQ';
 
+//map centered on NYC
 var initialCenterPoint = [-73.9712, 40.7128]
 var initialZoom = 9.4
 
-//globals for the choropleth
+//colors and breaks for the choropleth map
 var COLORS = ['#ffd1a9', '#ff9e79', '#fb6d4c', '#c23b22', '#8a0000', '#580000'],
 BREAKS = [0, 49181.99, 60282.99, 69936.99, 85155.99, 282189],
 FILTERUSE;
 
 // set the default text for the feature-info div
 var defaultText = '<p>Move the mouse over the map to get median income of a zip code in NYC</p>'
-$('#feature-info').html(defaultText)
+$('#tooltip-name).html(defaultText)
 
 //create a map using the Mapbox Light theme, zoomed in to DC
 var initOptions = {
