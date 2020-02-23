@@ -5,7 +5,7 @@ var initialCenterPoint = [-81.5158, 27.6648]
 var initialZoom = 5.8
 
 //globals for the choropleth
-var COLORS = ['#8c510a', '#d8b365', '#f6e8c3', '#c7eae5', '#5ab4ac', '#01665e'],
+var COLORS = ['#ffd1a9', '#ff9e79', '#fb6d4c', '#c23b22', '#8a0000', '#580000'],
 BREAKS = [0, 49181.99, 60282.99, 69936.99, 85155.99, 282189],
 FILTERUSE;
 
@@ -25,10 +25,10 @@ var initOptions = {
 var map = new mapboxgl.Map(initOptions);
 
 // Add zoom and rotation controls to the map.
-map.addControl(new mapboxgl.Navigation());
+map.addControl(new mapboxgl.NavigationControl());
 
 //data source: http://opendata.dc.gov/datasets/e87a760828844422afe864a6754049c2_20?geometry=-77.297%2C38.854%2C-76.732%2C38.934
-map.on('load', function () {
+map.on('style.load', function () {
 //add geojson source
   map.addSource('med-income-nyc', {
     type: 'geojson',
@@ -39,7 +39,7 @@ map.on('load', function () {
 console.log(map.getStyle().sources)
 
 map.addLayer({
-  "id": "zips",
+  "id": "zips-nyc",
   "type": "fill",
   "source": "med-income-nyc",
   "paint": {
