@@ -10,12 +10,11 @@
   </head>
 
   <body>
-    <!-- create sidebar with some text and call to action --> 
+    <!-- create sidebar with some text and call to action -->
     <div id='sidebar'>
       <h1>Median Income by ZipCode in NYC</h1>
-      <h2>Click to find out median income by zip code</h2>
-      <div id="tooltip-name"></div>
-      <div id='tooltip'></div>
+      <p>Click to find out median income by zip code</p>
+      <div id="feature-info"></div>
     </div>
 
     <div id='map-container'></div>
@@ -27,6 +26,23 @@
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
       crossorigin="anonymous"></script>
   <script src='js/scripts.js'></script>
+
+  <!-- legend properties -->
+<div id='legend' style='display:none;'>
+  <strong>The Title or Explanation of your Map</strong>
+  <nav class='legend clearfix'>
+    <span style='background:#ffd1a9;'></span>
+    <span style='background:#ff9e79;'></span>
+    <span style='background:#fb6d4c;'></span>
+    <span style='background:#c23b22;'></span>
+    <span style='background:#8a0000;'></span>
+    <span style='background:#580000;'></span>
+    <label>$0</label>
+    <label>49182</label>
+    <label>60283</label>
+    <label>69937</label>
+    <label>85156</label>
+    <label>282189</label>
 
   </body>
 </html>

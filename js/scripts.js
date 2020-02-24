@@ -5,85 +5,137 @@ mapboxgl.accessToken = 'pk.eyJ1Ijoib2xpdmlhbGltb25lIiwiYSI6ImNrNmxmOXNqNzBlZnEzZ
 var initialCenterPoint = [-73.9712, 40.7128]
 var initialZoom = 9.4
 
-//colors and income breaks for the choropleth map
-var COLORS = ['#ffd1a9', '#ff9e79', '#fb6d4c', '#c23b22', '#8a0000', '#580000'],
-BREAKS = [0, 49181.99, 60282.99, 69936.99, 85155.99, 282189],
-FILTERUSE;
-
 // set the default text for the feature-info div
-var defaultText = '<p>Move the mouse over the map to get median income of a zip code in NYC</p>'
-$('#tooltip-name').html(defaultText)
+var defaultText = '<p>Move the mouse over an area to find out the median income of a zip code</p>'
+$('#feature-info').html(defaultText)
 
-//create a map using the Mapbox Light theme
+// create map container
 var initOptions = {
   container: 'map-container', // put the map in this container
   style: 'mapbox://styles/mapbox/light-v10', // use this basemap
   center: initialCenterPoint, // initial view center
-  zoom: initialZoom, // initial view zoom level
+  zoom: initialZoom, // initial view zoom level (0-18)
 }
 
-// create the new map
+// create the map
 var map = new mapboxgl.Map(initOptions);
 
-// Add zoom and rotation controls to the map.
+// add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl());
 
-//datasource: US Census ACS Median Income Data 2019; Accessed via Simply Analytics
-map.on('style.load', function () {
-//add geojson source
+// wait for the initial style to Load
+map.on('style.load', function() {
+
+  // add a geojson source to the map using our external geojson file
   map.addSource('med-income-nyc', {
     type: 'geojson',
     data: './data/med-income-nyc.geojson',
   });
-// let's make sure the source got added by logging the current map state to the console
-console.log(map.getStyle().sources)
-map.addLayer({
-  "id": "zips-nyc",
-  "type": "fill",
-  "source": "med-income-nyc",
-  "paint": {
-    "fill-color": {
-      property: 'VALUE0', //variable for median income
-      stops: [
-        [BREAKS[0], COLORS[0]],
-        [BREAKS[1], COLORS[1]],
-        [BREAKS[2], COLORS[2]],
-        [BREAKS[3], COLORS[3]],
-        [BREAKS[4], COLORS[4]],
-        [BREAKS[5], COLORS[5]]]
-            },
-          "fill-opacity": 0.7,
-          "fill-outline-color": "#ffffff"
-      }
-});
-map.on('mousemove', function (e) {
-  // query for the features under the mouse
-  var features = map.queryRenderedFeatures(e.point, {
-      layers: ['med-income-nyc'],
-  });
-  // if the mouse pointer is over a feature on our layer of interest
-  // take the data for that feature and display it in the sidebar
-  if (features.length > 0) {
-    map.getCanvas().style.cursor = 'pointer';  // make the cursor a pointer
-    var hoveredFeature = features[0]
-    var featureInfo = `
-      <h4>${hoveredFeature.properties.spatial_id}</h4>
-      <p><strong>Median Income:</strong> ${COLORS(parseInt(hoveredFeature.properties.VALUE0))}</p>
-      <p><strong>Zip Code:</strong> ${hoveredFeature.properties.spatial_id}</p>
-    `
-    $('#tooltip-name').html(tooltip-name)
-    // set this lot's polygon feature as the data for the highlight source
-    map.getSource('tooltip-name').setData(hoveredFeature.geometry);
-  } else {
-    // if there is no feature under the mouse, reset things:
-    map.getCanvas().style.cursor = 'default'; // make the cursor default
-    // reset the highlight source to an empty featurecollection
-    map.getSource('highlight-feature').setData({
-      type: 'tooltip-name',
+
+  // log the current map state to the console
+  console.log(map.getStyle().sources)
+
+  // add color breaks for income based on our data
+  // darker shades of red denotes higher income
+  map.addLayer({
+    id: 'fill-med-income-nyc',
+    type: 'fill',
+    source: 'med-income-nyc',
+    paint: {
+      'fill-color': {
+        property: 'VALUE0',
+        stops: [
+          [
+            0,
+            '#ffd1a9',
+          ],
+          [
+            49181.99,
+            '#ff9e79',
+          ],
+          [
+            60282.99,
+            '#fb6d4c',
+          ],
+          [
+            69936.99,
+            '#c23b22',
+          ],
+          [
+            85155.99,
+            '#8a0000',
+          ],
+          [
+            282189,
+            '#580000',
+          ],
+        ]
+      },
+      "fill-opacity": 0.7,
+      "fill-outline-color": "#ffffff"
+    }
+  })
+
+  // add an empty data source, which we will use to highlight the zip code the user is hovering over
+  map.addSource('highlight-feature', {
+    type: 'geojson',
+    data: {
+      type: 'FeatureCollection',
       features: []
-    });
-    // reset the default message
-    $('#tooltip-name').html(defaultText)
-}
-    })
+    }
+  })
+
+  // add a layer for the highlighted lot
+  map.addLayer({
+    id: 'highlight-line',
+    type: 'line',
+    source: 'highlight-feature',
+    paint: {
+      'line-width': 2,
+      'line-opacity': 0.9,
+      'line-color': 'white',
+    }
   });
+
+  // listen for the mouse moving over the map and react when the cursor is over our data
+  map.on('mousemove', function (e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['fill-med-income-nyc'],
+    });
+
+    // if the mouse pointer is over a feature on our layer of interest
+    // take the data for that feature and display it in the sidebar
+    if (features.length > 0) {
+      map.getCanvas().style.cursor = 'pointer';  // make the cursor a pointer
+
+      //display the zip code and median income of zip code in sidebar
+      var hoveredFeature = features[0]
+      var featureInfo = `
+        <p><strong>Median Income:</strong> ${hoveredFeature.properties.VALUE0}</p>
+        <p><strong>Zip Code:</strong> ${hoveredFeature.properties.name}</p>
+      `
+      $('#feature-info').html(featureInfo)
+
+      map.getSource('highlight-feature').setData(hoveredFeature.geometry);
+    } else {
+      // if there is no feature under the mouse, reset things:
+      map.getCanvas().style.cursor = 'default'; // make the cursor default
+
+      // reset the highlight source to an empty featurecollection
+      map.getSource('highlight-feature').setData({
+        type: 'FeatureCollection',
+        features: []
+      });
+
+      // reset the default message
+      $('#feature-info').html(defaultText)
+    }
+  })
+
+})
+
+//adding a legend to the map
+var map = L.mapbox.map('map');
+map.legendControl
+  .addLegend(document.getElementById('legend').innerHTML)
+  .setPosition('topright');
