@@ -133,9 +133,3 @@ map.on('style.load', function() {
   })
 
 })
-
-//adding a legend to the map
-var map = L.mapbox.map('map');
-map.legendControl
-  .addLegend(document.getElementById('legend').innerHTML)
-  .setPosition('topright');

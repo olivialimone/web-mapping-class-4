@@ -27,21 +27,18 @@ h3 {
 }
 
 /*legend qualities*/
-.legend label,
-.legend span {
-  display:block;
-  float:left;
-  height:15px;
-  width:20%;
-  text-align:center;
-  font-size:9px;
-  color:#808080;
-  }
+#legend {
+  width: 300px;
+}
 
-/* on hover, make the background darker and turn the cursor to a pointer */
-button:hover {
-  cursor: pointer;
-  background-color: #ffcccb;
+.legend label, .legend span {
+  display: block;
+  float: right;
+  height: 15px;
+  width: 20%;
+  text-align: center;
+  font-size: 9px;
+  color: #808080;
 }
 
 #feature-info {
