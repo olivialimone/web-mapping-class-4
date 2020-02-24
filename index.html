@@ -12,8 +12,8 @@
   <body>
     <!-- create sidebar with some text and call to action -->
     <div id='sidebar'>
-      <h1>Median Income by ZipCode in NYC</h1>
-      <p>Click to find out median income by zip code</p>
+      <h2>Median Income by Zip Code in NYC</h2>
+      <p>Hover over a zip code to find out the median income of that area.</p>
       <div id="feature-info"></div>
     </div>
 
@@ -28,8 +28,8 @@
   <script src='js/scripts.js'></script>
 
   <!-- legend properties -->
-<div id='legend' style='display:none;'>
-  <strong>The Title or Explanation of your Map</strong>
+<div id='legend' style='display:visible;'>
+  <strong>Map Color Legend</strong>
   <nav class='legend clearfix'>
     <span style='background:#ffd1a9;'></span>
     <span style='background:#ff9e79;'></span>
@@ -37,16 +37,18 @@
     <span style='background:#c23b22;'></span>
     <span style='background:#8a0000;'></span>
     <span style='background:#580000;'></span>
-    <label>$0</label>
-    <label>49182</label>
-    <label>60283</label>
-    <label>69937</label>
-    <label>85156</label>
-    <label>282189</label>
-    <small>Source: <a href="#link to source">Name of source</a></small>
+    <label>$0 - </label>
+    <label>$49,182 -</label>
+    <label>$60,283 -</label>
+    <label>$69,937 -</label>
+    <label>$85,156 -</label>
+    <label>$282,189</label>
+    <br><br><br><br>
+
+  <!--adding data source -->
+    <small><strong>Source:</strong> US Census American Community Survey, Household Median Income, 2019 <br> | Accessed via Simply Analytics</small>
   </nav>
 </div>
-
 
   </body>
 </html>

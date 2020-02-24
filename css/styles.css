@@ -26,25 +26,27 @@ h3 {
   cursor: pointer;
 }
 
-/*legend qualities*/
+/*legend qualities */
 #legend {
   width: 300px;
+  position: absolute;
+  bottom: 0;
 }
 
 .legend label, .legend span {
   display: block;
-  float: right;
-  height: 15px;
-  width: 20%;
+  float: left;
+  height: 16px;
+  width: 15%;
   text-align: center;
   font-size: 9px;
-  color: #808080;
+  color: #000;
 }
 
 #feature-info {
-  background: #ea3c53;
+  background: #dbbebb;
   padding: 15px;
-  min-height: 150px;
+  min-height: 140px;
 }
 
 /* sidebar is fixed with and positioned to the left */
@@ -54,8 +56,8 @@ h3 {
   top: 0;
   bottom: 0;
   width: 300px;
-  background-color: #ee204d;
-  color: #FFF;
+  background-color: #f5ded2;
+  color: #000;
   padding: 25px;
   box-sizing: border-box;
 }
