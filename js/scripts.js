@@ -114,6 +114,7 @@ map.on('style.load', function() {
       //changing format of raw median income numbers to currency
       var VALUE0currency = numeral(hoveredFeature.properties.VALUE0).format('$0,0.00')
 
+      //this is what is going to display when user hovers over a zip code
       var featureInfo = `
         <p><strong>Median Income:</strong> ${VALUE0currency}</p>
         <p><strong>Zip Code:</strong> ${hoveredFeature.properties.name}</p>
