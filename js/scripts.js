@@ -97,9 +97,6 @@ map.on('style.load', function() {
     }
   });
 
-  //changing format of raw median income numbers to currency
-var string = numeral(VALUE0).format('$0,0.00')
-
   // listen for the mouse moving over the map and react when the cursor is over our data
   map.on('mousemove', function (e) {
     var features = map.queryRenderedFeatures(e.point, {
@@ -113,8 +110,13 @@ var string = numeral(VALUE0).format('$0,0.00')
 
       //display the zip code and median income of zip code in sidebar
       var hoveredFeature = features[0]
+
+      //changing format of raw median income numbers to currency
+      var VALUE0;
+      var VALUE0currency = numeral(VALUE0).format('$0,0.00')
+
       var featureInfo = `
-        <p><strong>Median Income:</strong> ${hoveredFeature.properties.string}</p>
+        <p><strong>Median Income:</strong> ${hoveredFeature.properties.VALUE0currency}</p>
         <p><strong>Zip Code:</strong> ${hoveredFeature.properties.name}</p>
       `
       $('#feature-info').html(featureInfo)
